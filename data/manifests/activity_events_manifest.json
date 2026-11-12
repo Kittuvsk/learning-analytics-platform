@@ -1,0 +1,20 @@
+{
+    "dataset": "learning_analytics_activity_events",
+    "master_seed": 20261022,
+    "generator_seed": 20261026,
+    "total_records": 2000000,
+    "baseline_records": 1980000,
+    "anomaly_records": 20000,
+    "anomalies_per_type": 5000,
+    "batch_size": 50000,
+    "event_file": "C:\\CandidateWorkspace\\learning-analytics-platform\\data\\generated\\activity_events.csv",
+    "ground_truth_file": "C:\\CandidateWorkspace\\learning-analytics-platform\\data\\ground_truth\\ground_truth.csv",
+    "sha256": "03265c412efa1e96e68dce73939e047452da1bf10272b76e1712935d2bba6a1c",
+    "ground_truth_sha256": "9f63ffa68c997df86c9f0327ffe594e80c08f3bf2c3894b3799a1c21bf778c1b",
+    "anomaly_distribution": {
+        "DUPLICATE_EVENT": 5000,
+        "UNENROLLED_ACTIVITY": 5000,
+        "PREMATURE_COMPLETION": 5000,
+        "TIMEZONE_MISALIGNMENT": 5000
+    }
+}

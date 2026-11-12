@@ -1,0 +1,204 @@
+TABLE_NAME	COLUMN_NAME	COLUMN_TYPE	IS_NULLABLE	COLUMN_DEFAULT	COLUMN_KEY	EXTRA
+activity_events	event_id	varchar(150)	NO	NULL	PRI
+activity_events	learner_id	varchar(20)	NO	NULL	MUL
+activity_events	course_id	varchar(20)	NO	NULL	MUL
+activity_events	enrollment_id	varchar(100)	YES	NULL	MUL
+activity_events	content_item_id	bigint unsigned	YES	NULL	MUL
+activity_events	event_type	enum('COURSE_OPENED','CONTENT_VIEWED','VIDEO_PLAYED','VIDEO_COMPLETED','DOCUMENT_DOWNLOADED','QUIZ_STARTED','QUIZ_SUBMITTED','ASSIGNMENT_SUBMITTED','COURSE_COMPLETED','LOGIN','OTHER')	NO	NULL	MUL
+activity_events	event_time_utc	datetime(6)	NO	NULL
+activity_events	received_at_utc	datetime(6)	NO	NULL
+activity_events	learner_timezone	varchar(64)	NO	UTC
+activity_events	device_type	enum('DESKTOP','MOBILE','TABLET','OTHER')	NO	OTHER
+activity_events	sync_type	enum('ONLINE','OFFLINE_SYNC')	NO	ONLINE
+activity_events	duration_seconds	int unsigned	NO	0
+activity_events	source_event_id	varchar(150)	YES	NULL	MUL
+activity_events	is_late_event	tinyint(1)	NO	0
+activity_events	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+anomaly_records	anomaly_id	bigint unsigned	NO	NULL	PRI	auto_increment
+anomaly_records	issue_type	enum('DUPLICATE_EVENT','UNENROLLED_ACTIVITY','PREMATURE_COMPLETION','TIMEZONE_MISALIGNMENT','OTHER')	NO	NULL	MUL
+anomaly_records	entity_type	varchar(50)	NO	NULL	MUL
+anomaly_records	entity_id	varchar(150)	NO	NULL
+anomaly_records	severity	enum('LOW','MEDIUM','HIGH','CRITICAL')	NO	MEDIUM
+anomaly_records	detection_status	enum('OPEN','REVIEWED','RESOLVED','FALSE_POSITIVE')	NO	OPEN
+anomaly_records	description	text	YES	NULL
+anomaly_records	detected_at	datetime	NO	NULL
+anomaly_records	resolved_at	datetime	YES	NULL
+assessments	assessment_id	varchar(30)	NO	NULL	PRI
+assessments	course_id	varchar(20)	NO	NULL	MUL
+assessments	content_item_id	bigint unsigned	YES	NULL	MUL
+assessments	title	varchar(200)	NO	NULL
+assessments	assessment_type	enum('QUIZ','EXAM','ASSIGNMENT','PROJECT')	NO	NULL
+assessments	maximum_score	decimal(8,2)	NO	NULL
+assessments	passing_score	decimal(8,2)	NO	NULL
+assessments	is_required	tinyint(1)	NO	1
+assessments	available_from	datetime	YES	NULL
+assessments	due_at	datetime	YES	NULL
+assessments	assessment_status	enum('DRAFT','PUBLISHED','CLOSED')	NO	DRAFT
+attempts	attempt_id	bigint unsigned	NO	NULL	PRI	auto_increment
+attempts	assessment_id	varchar(30)	NO	NULL	MUL
+attempts	learner_id	varchar(20)	NO	NULL	MUL
+attempts	enrollment_id	varchar(100)	NO	NULL	MUL
+attempts	attempt_number	int unsigned	NO	NULL
+attempts	started_at	datetime	NO	NULL
+attempts	submitted_at	datetime	YES	NULL
+attempts	score	decimal(8,2)	YES	NULL
+attempts	attempt_status	enum('IN_PROGRESS','SUBMITTED','GRADED','ABANDONED')	NO	IN_PROGRESS
+attempts	is_passed	tinyint(1)	YES	NULL
+attempts	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+audit_logs	audit_id	bigint unsigned	NO	NULL	PRI	auto_increment
+audit_logs	user_id	bigint unsigned	YES	NULL	MUL
+audit_logs	action	varchar(100)	NO	NULL
+audit_logs	entity_type	varchar(100)	NO	NULL	MUL
+audit_logs	entity_id	varchar(150)	YES	NULL
+audit_logs	old_values	json	YES	NULL
+audit_logs	new_values	json	YES	NULL
+audit_logs	ip_address	varchar(45)	YES	NULL
+audit_logs	created_at	datetime	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+cohort_learners	cohort_id	bigint unsigned	NO	NULL	PRI
+cohort_learners	learner_id	varchar(20)	NO	NULL	PRI
+cohort_learners	joined_at	datetime	NO	CURRENT_TIMESTAMP	PRI	DEFAULT_GENERATED
+cohort_learners	left_at	datetime	YES	NULL
+cohort_metrics	cohort_metric_id	bigint unsigned	NO	NULL	PRI	auto_increment
+cohort_metrics	cohort_id	bigint unsigned	NO	NULL	MUL
+cohort_metrics	course_id	varchar(20)	NO	NULL	MUL
+cohort_metrics	window_start	date	NO	NULL
+cohort_metrics	window_end	date	NO	NULL
+cohort_metrics	enrolled_count	int unsigned	NO	0
+cohort_metrics	active_count	int unsigned	NO	0
+cohort_metrics	completed_count	int unsigned	NO	0
+cohort_metrics	completion_rate	decimal(6,3)	NO	0.000
+cohort_metrics	average_engagement_minutes	decimal(12,2)	NO	0.00
+cohort_metrics	calculated_at	datetime	NO	NULL
+cohorts	cohort_id	bigint unsigned	NO	NULL	PRI	auto_increment
+cohorts	cohort_code	varchar(50)	NO	NULL	UNI
+cohorts	cohort_name	varchar(150)	NO	NULL
+cohorts	start_date	date	NO	NULL
+cohorts	end_date	date	YES	NULL
+cohorts	description	varchar(255)	YES	NULL
+cohorts	cohort_status	enum('PLANNED','ACTIVE','COMPLETED','CANCELLED')	NO	PLANNED
+completion_rules	completion_rule_id	bigint unsigned	NO	NULL	PRI	auto_increment
+completion_rules	course_id	varchar(20)	NO	NULL	MUL
+completion_rules	rule_version	int unsigned	NO	NULL
+completion_rules	minimum_content_completion	decimal(5,2)	NO	100.00
+completion_rules	require_all_assessments	tinyint(1)	NO	1
+completion_rules	minimum_assessment_score	decimal(5,2)	NO	50.00
+completion_rules	effective_from	datetime	NO	NULL
+completion_rules	effective_to	datetime	YES	NULL
+completion_rules	rule_status	enum('DRAFT','ACTIVE','RETIRED')	NO	DRAFT
+completion_rules	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+content_items	content_item_id	bigint unsigned	NO	NULL	PRI	auto_increment
+content_items	course_id	varchar(20)	NO	NULL	MUL
+content_items	parent_content_item_id	bigint unsigned	YES	NULL	MUL
+content_items	title	varchar(200)	NO	NULL
+content_items	content_type	enum('VIDEO','DOCUMENT','ARTICLE','QUIZ','ASSIGNMENT','MODULE')	NO	NULL
+content_items	sequence_number	int unsigned	NO	1
+content_items	estimated_minutes	int unsigned	NO	0
+content_items	content_status	enum('DRAFT','PUBLISHED','ARCHIVED')	NO	DRAFT
+content_items	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+course_outcomes	outcome_id	bigint unsigned	NO	NULL	PRI	auto_increment
+course_outcomes	enrollment_id	varchar(100)	NO	NULL	UNI
+course_outcomes	completion_rule_id	bigint unsigned	YES	NULL	MUL
+course_outcomes	content_completion_percentage	decimal(5,2)	NO	0.00
+course_outcomes	assessment_completion_percentage	decimal(5,2)	NO	0.00
+course_outcomes	final_assessment_score	decimal(8,2)	YES	NULL
+course_outcomes	outcome_status	enum('NOT_STARTED','IN_PROGRESS','COMPLETED','FAILED','WITHDRAWN')	NO	NOT_STARTED	MUL
+course_outcomes	calculated_at	datetime	NO	NULL
+course_outcomes	completion_reason	varchar(255)	YES	NULL
+courses	course_id	varchar(20)	NO	NULL	PRI
+courses	course_name	varchar(200)	NO	NULL
+courses	description	text	YES	NULL
+courses	category	varchar(100)	YES	NULL
+courses	difficulty_level	enum('BEGINNER','INTERMEDIATE','ADVANCED')	NO	BEGINNER
+courses	course_status	enum('DRAFT','PUBLISHED','ARCHIVED')	NO	DRAFT	MUL
+courses	duration_hours	decimal(8,2)	NO	0.00
+courses	published_at	datetime	YES	NULL
+courses	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+courses	updated_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED on update CURRENT_TIMESTAMP
+enrollment_history	history_id	bigint unsigned	NO	NULL	PRI	auto_increment
+enrollment_history	enrollment_id	varchar(100)	NO	NULL	MUL
+enrollment_history	previous_status	varchar(30)	YES	NULL
+enrollment_history	new_status	varchar(30)	NO	NULL
+enrollment_history	changed_by	bigint unsigned	YES	NULL	MUL
+enrollment_history	change_reason	varchar(255)	YES	NULL
+enrollment_history	changed_at	datetime	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+enrollments	enrollment_id	varchar(100)	NO	NULL	PRI
+enrollments	learner_id	varchar(20)	NO	NULL	MUL
+enrollments	course_id	varchar(20)	NO	NULL	MUL
+enrollments	cohort_id	bigint unsigned	YES	NULL	MUL
+enrollments	enrollment_status	enum('ENROLLED','IN_PROGRESS','COMPLETED','WITHDRAWN','SUSPENDED')	NO	ENROLLED
+enrollments	enrolled_at	datetime	NO	NULL
+enrollments	started_at	datetime	YES	NULL
+enrollments	completed_at	datetime	YES	NULL
+enrollments	withdrawn_at	datetime	YES	NULL
+enrollments	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+enrollments	updated_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED on update CURRENT_TIMESTAMP
+ground_truth	ground_truth_id	bigint unsigned	NO	NULL	PRI	auto_increment
+ground_truth	issue_type	varchar(50)	NO	NULL	MUL
+ground_truth	entity_type	varchar(50)	NO	NULL
+ground_truth	entity_id	varchar(150)	NO	NULL
+ground_truth	expected_label	tinyint(1)	NO	NULL
+ground_truth	expected_value	varchar(255)	YES	NULL
+ground_truth	explanation	text	YES	NULL
+ground_truth	generator_seed	bigint	NO	NULL
+ground_truth	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+instructor_courses	instructor_user_id	bigint unsigned	NO	NULL	PRI
+instructor_courses	course_id	varchar(20)	NO	NULL	PRI
+instructor_courses	assigned_at	datetime	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+learners	learner_id	varchar(20)	NO	NULL	PRI
+learners	user_id	bigint unsigned	YES	NULL	UNI
+learners	first_name	varchar(100)	NO	NULL
+learners	last_name	varchar(100)	NO	NULL
+learners	email	varchar(255)	NO	NULL	UNI
+learners	learner_status	enum('ACTIVE','INACTIVE','SUSPENDED','COMPLETED')	NO	ACTIVE	MUL
+learners	registration_date	date	NO	NULL
+learners	timezone	varchar(64)	NO	UTC
+learners	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+learners	updated_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED on update CURRENT_TIMESTAMP
+permissions	permission_id	bigint unsigned	NO	NULL	PRI	auto_increment
+permissions	permission_code	varchar(100)	NO	NULL	UNI
+permissions	description	varchar(255)	YES	NULL
+processing_runs	processing_run_id	bigint unsigned	NO	NULL	PRI	auto_increment
+processing_runs	run_code	varchar(100)	NO	NULL	UNI
+processing_runs	process_type	enum('INGESTION','VALIDATION','ANALYTICS','OUTCOME_CALCULATION','FULL_PIPELINE')	NO	NULL	MUL
+processing_runs	run_status	enum('STARTED','COMPLETED','FAILED','PARTIAL')	NO	STARTED
+processing_runs	started_at	datetime	NO	NULL
+processing_runs	finished_at	datetime	YES	NULL
+processing_runs	input_record_count	bigint unsigned	NO	0
+processing_runs	output_record_count	bigint unsigned	NO	0
+processing_runs	error_record_count	bigint unsigned	NO	0
+processing_runs	configuration	json	YES	NULL
+processing_runs	error_summary	text	YES	NULL
+refresh_tokens	refresh_token_id	bigint unsigned	NO	NULL	PRI	auto_increment
+refresh_tokens	user_id	bigint unsigned	NO	NULL	MUL
+refresh_tokens	token_hash	varchar(255)	NO	NULL	UNI
+refresh_tokens	expires_at	datetime	NO	NULL
+refresh_tokens	revoked_at	datetime	YES	NULL
+refresh_tokens	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+role_permissions	role_id	bigint unsigned	NO	NULL	PRI
+role_permissions	permission_id	bigint unsigned	NO	NULL	PRI
+roles	role_id	bigint unsigned	NO	NULL	PRI	auto_increment
+roles	role_code	varchar(50)	NO	NULL	UNI
+roles	role_name	varchar(100)	NO	NULL
+roles	description	varchar(255)	YES	NULL
+roles	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+user_roles	user_id	bigint unsigned	NO	NULL	PRI
+user_roles	role_id	bigint unsigned	NO	NULL	PRI
+user_roles	assigned_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+users	user_id	bigint unsigned	NO	NULL	PRI	auto_increment
+users	username	varchar(100)	NO	NULL	UNI
+users	email	varchar(255)	NO	NULL	UNI
+users	password_hash	varchar(255)	NO	NULL
+users	full_name	varchar(150)	NO	NULL
+users	account_status	enum('ACTIVE','INACTIVE','LOCKED','PENDING')	NO	PENDING
+users	last_login_at	datetime	YES	NULL
+users	created_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED
+users	updated_at	timestamp	NO	CURRENT_TIMESTAMP		DEFAULT_GENERATED on update CURRENT_TIMESTAMP
+weekly_engagement_metrics	metric_id	bigint unsigned	NO	NULL	PRI	auto_increment
+weekly_engagement_metrics	learner_id	varchar(20)	NO	NULL	MUL
+weekly_engagement_metrics	course_id	varchar(20)	NO	NULL	MUL
+weekly_engagement_metrics	week_start_date	date	NO	NULL
+weekly_engagement_metrics	active_days	int unsigned	NO	0
+weekly_engagement_metrics	valid_event_count	bigint unsigned	NO	0
+weekly_engagement_metrics	total_engagement_minutes	decimal(12,2)	NO	0.00
+weekly_engagement_metrics	unique_content_items	int unsigned	NO	0
+weekly_engagement_metrics	calculated_at	datetime	NO	NULL

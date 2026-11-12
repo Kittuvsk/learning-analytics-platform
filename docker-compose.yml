@@ -1,0 +1,25 @@
+
+services:
+  api:
+    build: .
+    container_name: learning-analytics-api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file:
+      - .env
+    environment:
+      DB_HOST: host.docker.internal
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  dashboard:
+    build: .
+    container_name: learning-analytics-dashboard
+    command: streamlit run dashboard/app.py --server.address=0.0.0.0 --server.port=8501
+    environment:
+      API_URL: http://api:8000
+    ports:
+      - "8502:8501"
+    depends_on:
+      - api
+    restart: unless-stopped

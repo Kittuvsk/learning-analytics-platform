@@ -1,0 +1,30 @@
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated datasets
+data/generated/
+data/processed/
+data/ground_truth/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
